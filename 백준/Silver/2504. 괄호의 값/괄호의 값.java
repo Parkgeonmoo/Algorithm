@@ -1,55 +1,64 @@
-import java.io.*;
-import java.util.*;
-public class Main {
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Scanner;
+import java.util.Stack;
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(in.readLine());
-		String S=st.nextToken();
-		Stack<Character> stack=new Stack<>();
-		int K=1;
-		int sum=0;
-		for(int i=0;i<S.length();i++) {
-			if(S.charAt(i)=='(') {
-				K*=2;
-				stack.add('(');
-			}else if(S.charAt(i)=='[') {
-				K*=3;
-				stack.add('[');
-			}else if(!stack.isEmpty()&&S.charAt(i)==')') {
-				if(i-1>=0&&S.charAt(i-1)=='(') {
-					sum+=K;
-				}else {
-					if(stack.peek()!='(') {
-						sum=0;
-						break;
-					}
-				}
-				K/=2;
-				stack.pop();
-			}else if(!stack.isEmpty()&&S.charAt(i)==']') {
-				if(i-1>=0&&S.charAt(i-1)=='[') {
-					sum+=K;
-				}else {
-					if(stack.peek()!='[') {
-						sum=0;
-						break;
-					}
-				}
-				K/=3;
-				stack.pop();
-			}else {
-				sum=0;
-				break;
-			}
-		}
-		if(!stack.isEmpty())
-			System.out.println(0);
-		else
-			System.out.println(sum);
-	}
+public class Main{
 
-	static int stoi(String s) {
-		return Integer.valueOf(s);
-	}
+
+
+    public static void main(String[] args) throws IOException{
+        Scanner in = new Scanner(System.in);
+        String inputValue = in.nextLine();
+
+        boolean flag = true; // 변경한 부분
+        int mul = 1;
+        int result = 0;
+        Stack<Character> stack = new Stack<>();
+        for(int i = 0; i < inputValue.length(); i++){
+            switch(inputValue.charAt(i)){
+                case '(':
+                    stack.push('(');
+                    mul *= 2;
+                    break;
+                case '[':
+                    stack.push('[');
+                    mul *= 3;
+                    break;
+                case ')':
+                    if(stack.isEmpty() || stack.peek()!='('){
+                        flag = false;
+                        break;
+                    }
+                    if(inputValue.charAt(i-1)=='(') result += mul;
+                    stack.pop();
+                    mul /= 2;
+                    break;
+                case ']':
+                    if(stack.isEmpty() || stack.peek()!='['){
+                        flag = false;
+                        break;
+                    }
+                    if(inputValue.charAt(i-1)=='[') result += mul;
+                    stack.pop();
+                    mul /= 3;
+                    break;
+
+                default:
+                    flag = false;
+                    break;
+            }
+        }
+
+        if(!flag || !stack.isEmpty()){ // 변경한 부분
+           System.out.println(0);
+        }else{
+            System.out.println(result);
+        }
+
+
+    }
 }
