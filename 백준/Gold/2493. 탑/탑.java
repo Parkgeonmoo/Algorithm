@@ -14,10 +14,7 @@ public class Main{
 
         for (int i = 1; i <= N; i++) {
             int heigth = Integer.parseInt(st.nextToken());
-            if (stack.isEmpty()) {
-                sb.append("0" + " ");
-                stack.push(new Top(heigth,i));
-            }
+          
             else{
                 while(true) {
                     if (stack.isEmpty()) {
