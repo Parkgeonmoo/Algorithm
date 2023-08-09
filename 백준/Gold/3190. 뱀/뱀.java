@@ -6,87 +6,109 @@ import java.util.Deque;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static int N;
-    static int[][] board;
-    static Deque<Position> snake = new ArrayDeque<>();
-    static int[] dx = {0, 1, 0, -1}; // 오른쪽, 아래, 왼쪽, 위쪽
+    static int[] dx = {0, 1, 0, -1};
     static int[] dy = {1, 0, -1, 0};
+    static int N;
+    static int K;
+    static Deque<snake> snakes = new ArrayDeque<>();
+    static position[] positions;
+    static int[][] map;
+    static int time = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
         N = Integer.parseInt(br.readLine());
-        int K = Integer.parseInt(br.readLine());
+        map = new int[N][N];
+        K = Integer.parseInt(br.readLine());
 
-        board = new int[N][N];
         for (int i = 0; i < K; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int row = Integer.parseInt(st.nextToken()) - 1;
-            int col = Integer.parseInt(st.nextToken()) - 1;
-            board[row][col] = 1; // 사과 위치 표시
+            st = new StringTokenizer(br.readLine());
+            int Ax = Integer.parseInt(st.nextToken()) - 1;
+            int Ay = Integer.parseInt(st.nextToken()) - 1;
+            map[Ax][Ay] = 1;
         }
-         //이해했음
 
         int L = Integer.parseInt(br.readLine());
-        Direction[] directions = new Direction[L];
+        positions = new position[L];
+
         for (int i = 0; i < L; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int time = Integer.parseInt(st.nextToken());
-            char dir = st.nextToken().charAt(0);
-            directions[i] = new Direction(time, dir);
-        } // 이해했음
+            st = new StringTokenizer(br.readLine());
+            int X = Integer.parseInt(st.nextToken());
+            char C = st.nextToken().charAt(0);
+            positions[i] = new position(X, C);
+        }
 
-        int time = 0;
         int direction = 0;
-        snake.add(new Position(0, 0));
+        snakes.add(new snake(0, 0));
 
-        loop: while (true) {
-            time++;
-            int nx = snake.getFirst().x + dx[direction];
-            int ny = snake.getFirst().y + dy[direction];
+        for (position temp : positions) {
+            while (time < temp.time) {
+                time++;
 
-            if (nx < 0 || nx >= N || ny < 0 || ny >= N || board[nx][ny] == -1) {
-                break; // 벽이나 자기 자신과 부딪힘
-            }
+                int nx = snakes.getFirst().x + dx[direction];
+                int ny = snakes.getFirst().y + dy[direction];
 
-            if (board[nx][ny] == 0) {
-                Position tail = snake.removeLast();
-                board[tail.x][tail.y] = 0;
-            }
-
-            snake.addFirst(new Position(nx, ny));
-            board[nx][ny] = -1; // 자기 자신을 나타내는 것
-
-            for (Direction d : directions) {
-                if (d.time == time) {
-                    if (d.direction == 'D') {
-                        direction = (direction + 1) % 4;
-                    } else {
-                        direction = (direction + 3) % 4;
-                    }
+                if (nx < 0 || nx >= N || ny < 0 || ny >= N || map[nx][ny] == -1) {
+                    System.out.println(time);
+                    return;
                 }
+
+                if (map[nx][ny] == 0) {
+                    snake tail = snakes.pollLast();
+                    map[tail.x][tail.y] = 0;
+                }
+
+                snakes.addFirst(new snake(nx, ny));
+                map[nx][ny] = -1;
+            }
+
+            if (temp.position == 'D') {
+                direction = (direction + 1) % 4;
+            } else {
+                direction = (direction + 3) % 4;
             }
         }
 
-        System.out.println(time);
+        // Handle remaining time
+        while (true) {
+            time++;
+
+            int nx = snakes.getFirst().x + dx[direction];
+            int ny = snakes.getFirst().y + dy[direction];
+
+            if (nx < 0 || nx >= N || ny < 0 || ny >= N || map[nx][ny] == -1) {
+                System.out.println(time);
+                return;
+            }
+
+            if (map[nx][ny] == 0) {
+                snake tail = snakes.pollLast();
+                map[tail.x][tail.y] = 0;
+            }
+
+            snakes.addFirst(new snake(nx, ny));
+            map[nx][ny] = -1;
+        }
     }
 
-    static class Position {
-        int x, y;
+    public static class position {
+        int time;
+        char position;
 
-        Position(int x, int y) {
+        position(int time, char position) {
+            this.time = time;
+            this.position = position;
+        }
+    }
+
+    public static class snake {
+        int x;
+        int y;
+
+        snake(int x, int y) {
             this.x = x;
             this.y = y;
-        }
-    }
-
-    static class Direction {
-        int time;
-        char direction;
-
-        Direction(int time, char direction) {
-            this.time = time;
-            this.direction = direction;
         }
     }
 }
