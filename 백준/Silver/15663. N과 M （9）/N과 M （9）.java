@@ -48,7 +48,7 @@ public class Main {
         int prev = -1;  // 이전에 선택한 원소 초기화
 
         for (int i = 0; i < N; i++) {
-            if (!visited[i] && (prev == -1 || prev != arr[i])) {
+            if (!visited[i] &&  prev != arr[i]) {
                 visited[i] = true;
                 result[depth] = arr[i];
                 prev = arr[i];
