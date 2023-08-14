@@ -4,75 +4,73 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static int N;
+    static boolean[] visited;
+    static int N ;
     static int[][] map;
-    static boolean[] visit;
-
     static int Min = Integer.MAX_VALUE;
 
+
     public static void main(String[] args) throws IOException {
+       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       StringTokenizer st;
+       N = Integer.parseInt(br.readLine());
+       map = new int[N][N];
+       visited = new boolean[N];
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       for (int i = 0; i < N; i++) {
+           st = new StringTokenizer(br.readLine());
+           for (int j = 0; j < N; j++) {
+               map[i][j] = Integer.parseInt(st.nextToken());
+           }
+       }
 
-        N = Integer.parseInt(br.readLine());
+       for (int i = 0; i < N; i++) {
+           find(0,0,i);
+       }
+       System.out.println(Min);
 
-        map = new int[N][N];
-        visit = new boolean[N];
 
-        for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            for (int j = 0; j < N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
-
-        for (int i = 1; i <= N / 2; i++) {
-            find(0, 0, i);
-        }
-
-        System.out.println(Min);
 
     }
-
-    static void find(int index, int count, int teamSize) {
-        if (count == teamSize) {
+    public static void find(int index,int count,int check) {
+        if (check == count) {
             diff();
             return;
         }
-
         for (int i = index; i < N; i++) {
-            if (!visit[i]) {
-                visit[i] = true;
-                find(i + 1, count + 1, teamSize);
-                visit[i] = false;
+            if (!visited[i]) {
+                visited[i] = true;
+                find(i+1,count+1,check);
+                visited[i] = false;
             }
         }
-    }
 
-    static void diff() {
-        int team_start = 0;
-        int team_link = 0;
 
+        }
+    public static void diff() {
+        int start = 0;
+        int link = 0;
         for (int i = 0; i < N; i++) {
-            for (int j = i + 1; j < N; j++) {
-                if (visit[i] && visit[j]) {
-                    team_start += map[i][j];
-                    team_start += map[j][i];
-                } else if (!visit[i] && !visit[j]) {
-                    team_link += map[i][j];
-                    team_link += map[j][i];
+            for (int j = i+1; j < N; j++) {
+                if (visited[i] == true && visited[j] == true) {
+                    start += map[i][j];
+                    start += map[j][i];
+                }
+                else if (visited[i] == false && visited[j] == false){
+                    link += map[i][j];
+                    link += map[j][i];
                 }
             }
+
         }
-
-        int val = Math.abs(team_start - team_link);
-
-        if (val == 0) {
-            System.out.println(val);
+        int result = Math.abs(start-link);
+        if (result == 0) {
+            System.out.println(result);
             System.exit(0);
         }
-
-        Min = Math.min(val, Min);
+        Min = Math.min(result,Min);
     }
+
+
+
 }
