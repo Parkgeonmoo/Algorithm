@@ -4,56 +4,58 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n;
+    static int N;
     static boolean[] visited;
     static int[][] map;
-    static long result_min = Integer.MAX_VALUE;
+    static int Min = Integer.MAX_VALUE;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[]args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
         StringTokenizer st;
+        N = Integer.parseInt(br.readLine());
+        map = new int[N][N];
 
-        map = new int[n][n];
-        for (int i = 0; i < n; i++) {
+        for (int i =0 ; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < N; j++){
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        for(int i=0; i<n; i++) {
-            visited = new boolean[n];
-            visited[i] = true;
-            dfs(i, i, 0);
-        }
-        System.out.println(result_min);
-    }
+            visited = new boolean[N];
+            visited[0] = true;
+            find(0,0,0);
 
-    public static void dfs(int start, int now, long cost){
-        if (allVisited()) {
-            if(map[now][start]!=0){
-                result_min = Math.min(result_min, cost+map[now][0]);
+
+        System.out.println(Min);
+
+
+    }
+    public static void find(int start,int now,int cost) {
+        if (allvisited()) {
+            if (map[now][start] != 0) {
+                Min = Math.min(Min,cost+map[now][start]);
             }
             return;
         }
-
-        for(int i=1; i<n; i++){
+        for (int i = 1; i < N; i++) {
             if (!visited[i] && map[now][i] != 0) {
                 visited[i] = true;
-                dfs(start, i, cost + map[now][i]);
+                find(start,i,cost+map[now][i]);
                 visited[i] = false;
             }
         }
+
     }
 
-    public static boolean allVisited() {
-        for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
+    public static boolean allvisited() {
+        for (int i = 0; i < N; i++) {
+            if (!visited[i]){
                 return false;
             }
         }
         return true;
     }
+
 
 }
