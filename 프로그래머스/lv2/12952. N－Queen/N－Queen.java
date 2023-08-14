@@ -3,7 +3,7 @@ class Solution {
     
     public int solution(int n) {
         int[] columns = new int[n];
-        placeQueens(columns, 0, n);
+        find(columns, 0);
         return answer;
     }
     
@@ -17,16 +17,16 @@ class Solution {
         return true;
     }
     
-    private void placeQueens(int[] columns, int row, int n) {
-        if (row == n) {
+    private void find(int[] columns, int row) {
+        if (row == columns.length) {
             answer++;
             return;
         }
         
-        for (int col = 0; col < n; col++) {
+        for (int col = 0; col < columns.length; col++) {
             if (isValid(columns, row, col)) {
                 columns[row] = col;
-                placeQueens(columns, row + 1, n);
+                find(columns, row + 1);
             }
         }
     }
