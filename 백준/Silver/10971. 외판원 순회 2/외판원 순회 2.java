@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -8,8 +11,7 @@ public class Main {
     static int N;
     static int[][] map;
     static boolean[] visited;
-    static int cost = 0;
-    static int Min = Integer.MAX_VALUE;
+    static int answer = Integer.MAX_VALUE;
 
 
     public static void main(String[] args) throws IOException {
@@ -20,26 +22,27 @@ public class Main {
         map = new int[N][N];
         visited = new boolean[N];
 
-
-
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
+
         visited[0] = true;
-        dfs(0,0,0);
-        System.out.println(Min);
+        dfs(0,0,0,0);
+        System.out.println(answer);
+
 
 
 
 
     }
-    public static void dfs(int start,int now,int cost) {
-        if (allvisited()) {
-            if (map[now][start] != 0){
-                Min = Math.min(Min,cost + map[now][start]);
+    public static void dfs(int start,int now,int depth,int cost) {
+        if (depth == N-1) {
+            if (map[now][start] != 0) {
+                answer = Math.min(answer,cost+map[now][start]);
+                return;
             }
             return;
         }
@@ -47,20 +50,12 @@ public class Main {
         for (int i = 1; i < N; i++) {
             if (!visited[i] && map[now][i] != 0) {
                 visited[i] = true;
-                dfs(start,i,cost+map[now][i]);
+                dfs(start, i, depth+1,cost + map[now][i]);
                 visited[i] = false;
             }
         }
+    }
 
 
-    }
-    public static boolean allvisited() {
-        for (int i = 0; i < N; i++) {
-            if (!visited[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 }
-
