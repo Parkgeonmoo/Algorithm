@@ -31,27 +31,23 @@ public class Main {
         }
 
 
-        bfs(1);
+        dfs(1);
         System.out.println(answer);
 
 
 
     }
-    public static void bfs(int start) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.offer(start);
+    public static void dfs(int start) {
+        visited[start] = true;
 
-        while (!queue.isEmpty()) {
-            int now = queue.poll();
-                visited[now] = true;
-                for (int i : computer[now]) {
-                    if (!visited[i]) {
-                        visited[i] = true;
-                        answer++;
-                        queue.add(i);
-                    }
-                }
-
+        for (int temp : computer[start]) {
+            if (!visited[temp]) {
+                visited[temp] = true;
+                answer++;
+                dfs(temp);
+            }
         }
+
+
     }
 }
