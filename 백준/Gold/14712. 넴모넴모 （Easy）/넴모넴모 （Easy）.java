@@ -4,42 +4,43 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main{
-    static int n, m;
-    static int ans;
-    static int[][] map;
+    static boolean[][] visited;
+    static int N,M;
+    static int answer = 0;
   
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        map = new int[n + 1][m + 1];
+        visited = new boolean[N+1][M+1];
 
         dfs(0);
-        System.out.println(ans);
-    }
+        System.out.println(answer);
 
-    static void dfs(int cnt) {
-        if (cnt == n * m) {
-            ans++;
+
+    }
+    public static void dfs(int count) {
+        if (count == N*M) {
+            answer++;
             return;
         }
-        int y = cnt / m + 1;
-        int x = cnt % m + 1;
 
-        if (map[y - 1][x] == 1 && map[y][x - 1] == 1 && map[y - 1][x - 1] == 1) {
-            // 현재 놓을 수 없는 곳
-            dfs(cnt + 1);
-        } else {
-            dfs(cnt + 1); // 선택안하고 다음꺼 본 경우
-            map[y][x] = 1;
-            dfs(cnt + 1);// 선택하고 다음꺼 본 경우
-            map[y][x] = 0;
+        int x = count/M + 1;
+        int y = count%M + 1;
+
+        if (visited[x-1][y-1] == true && visited[x-1][y] ==  true && visited[x][y-1] == true) {
+            dfs(count+1);
+        }
+        else{
+            dfs(count+1);
+            visited[x][y] = true;
+            dfs(count+1);
+            visited[x][y] = false;
         }
 
-    }
+
+     }
 }
