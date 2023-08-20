@@ -1,53 +1,55 @@
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.nio.Buffer;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-public class  Main {
-    static int []dx = {0,1,0,-1};
-    static int []dy = {1,0,-1,0};
-    static boolean[][]visited;
-    static int [][]A;
+public class Main {
+    static boolean [][] visited;
+    static int[][] map;
     static int N,M;
+    static int[] dx = {0,0,1,-1};
+    static int[] dy = {1,-1,0,0};
+
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken()); // 행 선언
-        M = Integer.parseInt(st.nextToken()); // 열 선언
-        A = new int[N][M]; // 2차원 배열 선언
-        visited = new boolean[N][M]; // 인접 방문 리스트 확인 배열 생성
-        for (int i = 0; i < N; i++){
-            st = new StringTokenizer(br.readLine());
-            String line = st.nextToken(); //\t \w 등으로 나눠지면 line에 저장
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-            for (int j =0; j < M; j++){
-                A[i][j] = Integer.parseInt(line.substring(j,j+1));
+        map = new int[N][M];
+        visited = new boolean[N][M];
 
+        for (int i = 0; i < N; i++) {
+            String s = br.readLine();
+            for (int j = 0; j < M; j++) {
+                map[i][j] = s.charAt(j) -'0';
             }
         }
-        BFS(0,0);
-        System.out.println(A[N-1][M-1]);
-
+        bfs(0,0);
+        System.out.println(map[N-1][M-1]);
 
 
     }
-    public static void BFS(int i,int j){
+    public static void bfs(int x,int y) {
         Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[] {i,j});
-        while(!queue.isEmpty()){
-            int now[] = queue.poll();
-            visited[i][j] = true;
-            for(int k = 0; k < 4; k++){
-                int x = now[0] + dx[k];
-                int y = now[1] + dy[k];
-                if(x >= 0 && y >=0 && x < N && y < M){
-                    if(A[x][y] != 0 && !visited[x][y]){
-                        visited[x][y] = true;
-                        A[x][y] = A[now[0]][now[1]]+1;
-                        queue.add(new int[] {x,y});
+        queue.add(new int[] {x,y});
+        visited[x][y] = true;
+
+        while(!queue.isEmpty()) {
+            int [] temp = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int nx = temp[0] + dx[i];
+                int ny = temp[1] + dy[i];
+
+                if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
+                    if (!visited[nx][ny] && map[nx][ny] != 0) {
+                        visited[nx][ny] = true;
+                        map[nx][ny] = map[temp[0]][temp[1]] + 1;
+                        queue.add(new int[] {nx,ny});
                     }
                 }
             }
