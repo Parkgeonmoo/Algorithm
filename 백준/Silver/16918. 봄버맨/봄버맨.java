@@ -18,38 +18,36 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
 
         map = new char[r][c];
+
         for (int i = 0; i < r; i++) {
-            String s = br.readLine();
+            String line = br.readLine();
             for (int j = 0; j < c; j++) {
-                map[i][j] = s.charAt(j);
+                map[i][j] = line.charAt(j);
             }
         }
 
         for (int i = 2; i <= n; i++) {
-            if (i % 2 == 1) {
-                // 폭탄위치 저장하기
-                for (int k = 0; k < r; k++) {
-                    for (int j = 0; j < c; j++) {
-                        if (map[k][j] == 'O') {
-                            q.add(new int[]{k, j});
-                        }
-                    }
-                }
-                for (char[] m : map) {
-                    Arrays.fill(m, 'O');
-                }
-                bfs();
-            }
+               if (i % 2 == 1) {
+                   for (int j = 0; j < r; j++) {
+                       for (int k = 0; k < c; k++) {
+                           if (map[j][k] == 'O') {
+                               q.add(new int[] {j,k});
+                           }
+                       }
+                   }
+                   for (char [] m : map) {
+                       Arrays.fill(m, 'O');
+                   }
+                   bfs();
+               }
 
         }
-
 
         if (n % 2 == 0) {
-            for (char[] m : map) {
-                Arrays.fill(m, 'O');
+            for (char[] c : map) {
+                Arrays.fill(c,'O');
             }
         }
-
 
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
@@ -57,17 +55,17 @@ public class Main {
             }
             System.out.println();
         }
-    }
 
-    static void bfs() {
-        while (!q.isEmpty()) {
-            int[] t = q.poll();
-            int x = t[0];
-            int y = t[1];
-            map[x][y] = '.';
+    }
+    public static void bfs(){
+        while(!q.isEmpty()) {
+            int [] temp = q.poll();
+            map[temp[0]][temp[1]] = '.';
+
             for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
+                int nx = temp[0] + dx[i];
+                int ny = temp[1] + dy[i];
+
                 if (nx >= 0 && nx < r && ny >= 0 && ny < c) {
                     if (map[nx][ny] == 'O') {
                         map[nx][ny] = '.';
@@ -75,8 +73,6 @@ public class Main {
                 }
             }
         }
-
-
     }
 
 }
