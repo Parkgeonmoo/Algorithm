@@ -6,13 +6,11 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static boolean [][] visited;
+    static int N, M;
     static int[][] map;
-    static int N,M;
-    static int[] dx = {0,0,1,-1};
-    static int[] dy = {1,-1,0,0};
-
-
+    static int[] dx = {0, 0, 1, -1};
+    static int[] dy = {1, -1, 0, 0};
+    static boolean[][] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,35 +22,47 @@ public class Main {
         visited = new boolean[N][M];
 
         for (int i = 0; i < N; i++) {
-            String s = br.readLine();
-            for (int j = 0; j < M; j++) {
-                map[i][j] = s.charAt(j) -'0';
+            String line = br.readLine();
+            for (int j = 0; j < M; j++){
+                map[i][j] = line.charAt(j) - '0';
             }
         }
+
         bfs(0,0);
+
         System.out.println(map[N-1][M-1]);
 
 
-    }
-    public static void bfs(int x,int y) {
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {x,y});
-        visited[x][y] = true;
 
-        while(!queue.isEmpty()) {
-            int [] temp = queue.poll();
+
+
+
+
+    }
+
+    public static void bfs(int startx,int starty) {
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{startx,starty});
+        visited[startx][starty] = true;
+
+        while (!q.isEmpty()) {
+            int[] temp = q.poll();
+
             for (int i = 0; i < 4; i++) {
                 int nx = temp[0] + dx[i];
                 int ny = temp[1] + dy[i];
 
                 if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
-                    if (!visited[nx][ny] && map[nx][ny] != 0) {
+
+                    if (!visited[nx][ny] && map[nx][ny] == 1) {
                         visited[nx][ny] = true;
                         map[nx][ny] = map[temp[0]][temp[1]] + 1;
-                        queue.add(new int[] {nx,ny});
+                        q.offer(new int[]{nx, ny});
                     }
                 }
             }
         }
+
     }
 }
+
