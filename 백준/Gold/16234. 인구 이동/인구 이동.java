@@ -10,6 +10,7 @@ public class Main {
     static int[] dy = {1, -1, 0, 0};
     static int countday = 0;
     static boolean[][] visited;
+    static boolean canmove;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,65 +29,66 @@ public class Main {
             }
         }
 
-        while (true) {
-            visited = new boolean[N][N];
-            boolean canMove = false;
 
+        while(true) {
+            visited = new boolean[N][N];
+            canmove = false;
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     if (!visited[i][j]) {
                         if (bfs(i, j)) {
-                            canMove = true;
+                            canmove = true;
                         }
                     }
                 }
             }
 
-            if (!canMove) {
+            if (!canmove) {
                 break;
             }
-
             countday++;
         }
 
         System.out.println(countday);
+
+
     }
-
-    public static boolean bfs(int startX, int startY) {
+    public static boolean bfs(int startx,int starty) {
         Queue<int[]> q = new LinkedList<>();
-        List<int[]> union = new ArrayList<>();
-        visited[startX][startY] = true;
-        q.offer(new int[]{startX, startY});
-        int populationSum = map[startX][startY];
-        union.add(new int[]{startX, startY});
+        ArrayList<int[]> unionlist = new ArrayList<>();
+        visited[startx][starty] = true;
+        q.offer(new int[] {startx,starty});
+        int unioncount = map[startx][starty];
+        unionlist.add(new int[]{startx,starty});
 
-        while (!q.isEmpty()) {
-            int[] temp = q.poll();
+
+
+
+        while (!q.isEmpty()){
+            int [] temp = q.poll();
 
             for (int i = 0; i < 4; i++) {
                 int nx = temp[0] + dx[i];
                 int ny = temp[1] + dy[i];
 
-                if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny]) {
+                if (nx >= 0 && nx < N && ny >= 0 && ny < N ) {
                     int diff = Math.abs(map[temp[0]][temp[1]] - map[nx][ny]);
+                    if (diff >= L && diff <= R && !visited[nx][ny]) {
+                            visited[nx][ny] = true;
+                            q.offer(new int[]{nx,ny});
+                            unionlist.add(new int[]{nx,ny});
+                            unioncount += map[nx][ny];
 
-                    if (diff >= L && diff <= R) {
-                        visited[nx][ny] = true;
-                        q.offer(new int[]{nx, ny});
-                        union.add(new int[]{nx, ny});
-                        populationSum += map[nx][ny];
                     }
                 }
             }
         }
+        if (unionlist.size() > 1) {
+            int avg = unioncount / unionlist.size();
 
-        if (union.size() > 1) {
-            int average = populationSum / union.size();
-
-            for (int[] coord : union) {
-                map[coord[0]][coord[1]] = average;
+            for (int [] temp : unionlist) {
+                map[temp[0]][temp[1]] = avg;
             }
-
             return true;
         }
 
