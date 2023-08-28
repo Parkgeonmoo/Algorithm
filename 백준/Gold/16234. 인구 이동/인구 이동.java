@@ -74,10 +74,10 @@ public class Main {
                 if (nx >= 0 && nx < N && ny >= 0 && ny < N ) {
                     int diff = Math.abs(map[temp[0]][temp[1]] - map[nx][ny]);
                     if (diff >= L && diff <= R && !visited[nx][ny]) {
-                            visited[nx][ny] = true;
-                            q.offer(new int[]{nx,ny});
-                            unionlist.add(new int[]{nx,ny});
-                            unioncount += map[nx][ny];
+                        visited[nx][ny] = true;
+                        q.offer(new int[]{nx,ny});
+                        unionlist.add(new int[]{nx,ny});
+                        unioncount += map[nx][ny];
 
                     }
                 }
