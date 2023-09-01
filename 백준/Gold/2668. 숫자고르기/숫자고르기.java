@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,20 +11,19 @@ public class Main{
 
     public static void main(String[] args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
         int N = Integer.parseInt(br.readLine());
         arr = new int[N+1];
 
-
         for (int i = 1; i <= N; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
+            st = new StringTokenizer(br.readLine());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
         for (int i = 1; i <= N; i++) {
             visited = new boolean[N+1];
-            visited[i] = true;
             last = i;
             bfs(i);
-
         }
 
         System.out.println(list.size());
@@ -35,6 +33,7 @@ public class Main{
         }
 
 
+
     }
     public static void bfs(int start) {
         Queue<Integer> q = new LinkedList<>();
@@ -42,14 +41,15 @@ public class Main{
 
         while (!q.isEmpty()) {
             int temp = q.poll();
-                if (!visited[arr[temp]]) {
-                    visited[arr[temp]] = true;
-                    q.offer(arr[temp]);
-                }
-            if (arr[temp] == last){
-                list.add(arr[temp]);
-            }
-        }
 
+            if (!visited[arr[temp]]) {
+                visited[arr[temp]] = true;
+                q.offer(arr[temp]);
+                if (arr[temp] == last) {
+                    list.add(arr[temp]);
+                }
+            }
+
+        }
     }
 }
