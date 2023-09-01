@@ -78,8 +78,7 @@ public class Main {
 
         q.offer(new Position(shark.x, shark.y, 0));
         visited[shark.x][shark.y] = true;
-
-        int minDist = Integer.MAX_VALUE;
+        
 
         while (!q.isEmpty()) {
             int qSize = q.size();
@@ -98,7 +97,7 @@ public class Main {
 
                             if (map[nx][ny] > 0 && map[nx][ny] < size) {
                                 eatableFish.add(new Position(nx, ny, current.dist + 1));
-                                minDist = Math.min(minDist, current.dist + 1);
+                                
                             }
                         }
                     }
@@ -118,7 +117,7 @@ public class Main {
                     count = 0;
                 }
 
-                return minDist;
+                return fishToEat.dist;
             }
         }
 
