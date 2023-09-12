@@ -21,23 +21,25 @@ public class Main {
         for (int i = 0; i < N; i++) {
             String command = br.readLine();
             int pos = -1;
-            if (command.equals("B")) {
-                pos = 0;
-            } else if (command.equals("RB")) {
-                pos = 1;
-            } else if (command.equals("R")) {
-                pos = 2;
-            } else if (command.equals("RT")) {
-                pos = 3;
-            } else if (command.equals("T")) {
-                pos = 4;
-            } else if (command.equals("LT")) {
-                pos = 5;
-            } else if (command.equals("L")) {
-                pos = 6;
-            } else if (command.equals("LB")) {
-                pos = 7;
+            switch(command) {
+                case "B" :  pos = 0;
+                     break;
+                case "RB" : pos = 1;
+                     break;
+                case "R" : pos = 2;
+                    break;
+                case "RT" : pos = 3;
+                    break;
+                case "T" : pos = 4;
+                    break;
+                case "LT" : pos = 5;
+                    break;
+                case "L" : pos = 6;
+                    break;
+                case "LB" : pos = 7;
+                    break;
             }
+
 
             int[] nKing = new int[] { king[0] + dy[pos], king[1] + dx[pos] };
 
