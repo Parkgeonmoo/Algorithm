@@ -1,52 +1,65 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int[][] map;
+    static int dx[] = {0, 1, 0, -1};
+    static int dy[] = {1, 0, -1, 0};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int h = Integer.parseInt(st.nextToken());
-        int w = Integer.parseInt(st.nextToken());
-        int n = Integer.parseInt(st.nextToken());
+        StringBuilder sb = new StringBuilder();
 
-        int[][] arr = new int[h][w];
-        for(int i=0; i<h; i++) {
-            st = new StringTokenizer(br.readLine());
-            for(int j=0; j<w; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int R = Integer.parseInt(st.nextToken());
+
+        map = new int[N][M];
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine(), " ");
+            for (int j = 0; j < M; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        int count = Math.min(h, w) / 2;
-        for(int i=0; i<n; i++) {
-            for(int j=0; j<count; j++) {
-                int temp = arr[j][j];
+        int count = Math.min(N, M) / 2;
 
-                for(int k=j+1; k<w-j; k++)
-                    arr[j][k-1] = arr[j][k];
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < count; j++) {
+                int x = j;
+                int y = j;
 
-                for(int k=j+1; k<h-j; k++)
-                    arr[k-1][w-1-j] = arr[k][w-1-j];
+                int temp = map[x][y];
+                int idx = 0;
 
-                for(int k=w-2-j; k>=j; k--)
-                    arr[h-1-j][k+1] = arr[h-1-j][k];
+                while (idx < 4) {
+                    int nx = x + dx[idx];
+                    int ny = y + dy[idx];
 
-                for(int k=h-2-j; k>=j; k--)
-                    arr[k+1][j] = arr[k][j];
-
-                arr[j+1][j] = temp;
+                    if (nx >= j && nx < N - j && ny >= j && ny < M - j) {
+                        map[x][y] = map[nx][ny];
+                        x = nx;
+                        y = ny;
+                    } else {
+                        idx++;
+                    }
+                }
+                map[j + 1][j] = temp;
             }
         }
 
-        for(int j=0; j<h; j++) {
-            for(int k=0; k<w; k++) {
-                System.out.print(arr[j][k] + " ");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                sb.append(map[i][j] + " ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+
+        System.out.println(sb.toString()); // 결과를 출력
     }
 }
