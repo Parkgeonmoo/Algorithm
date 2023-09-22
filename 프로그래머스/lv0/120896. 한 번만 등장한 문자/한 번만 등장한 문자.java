@@ -1,36 +1,33 @@
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 class Solution {
     public String solution(String s) {
-
+        HashMap<Character,Integer> map = new HashMap<>();
+        char[] sCharArray = s.toCharArray();
         StringBuilder sb = new StringBuilder();
-        ArrayList<Character> check = new ArrayList<>();
+        ArrayList<Character> list = new ArrayList<>();
 
-        Map<Character,Integer> map = new HashMap<>();
-
-        char[] temp = s.toCharArray();
-
-        for (int i = 0; i < temp.length; i++) {
-            map.put(temp[i],map.getOrDefault(temp[i],0) +1);
+        for (int i = 0; i < sCharArray.length; i++) {
+            map.put(sCharArray[i],map.getOrDefault(sCharArray[i],0)+1);
         }
 
-
-
-        for (char c : map.keySet()) {
-            int count = map.get(c);
-            if (count == 1) {
-                check.add(c);
+        for (char temp : map.keySet()) {
+            if (map.get(temp) == 1) {
+                list.add(temp);
             }
         }
 
-        Collections.sort(check);
+        Collections.sort(list);
 
-        for (char c : check) {
-            sb.append(c);
+        for (char temp : list) {
+            sb.append(temp);
         }
 
 
-        return sb.toString();
+
+
+    return sb.toString();
     }
 }
