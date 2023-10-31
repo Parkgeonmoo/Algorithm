@@ -1,43 +1,45 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.StringTokenizer;
+import java.util.Arrays;
+
+import static java.util.Collections.reverseOrder;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int N = in.nextInt();
-        int A[] = new int[N]; //삽입정렬 할 배열
-        int S[] = new int[N]; // 배열 합 넣을 배열
 
-        for (int i = 0; i < N; i++){
-            A[i] = in.nextInt();
-        }
-        for(int i = 1; i<N; i++){
-            int insert_point = i;
-            int insert_value = A[i];
-            for(int j = i-1; j >=0 ; j--) {
-                if (A[j] < A[i]) {
-                    insert_point = j + 1;
-                    break;
-                }
-                if (j == 0) {
-                    insert_point = 0;
-                }
-            }
-                for(int j=i; j>insert_point; j--){
-                    A[j] = A[j-1];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-                }
-                A[insert_point] = insert_value;
+        int N = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        int[] ans = new int[N];
+        int[] sum = new int[N];
 
-            }
-            S[0] = A[0];
-        for(int i = 1; i < N; i++){
-            S[i] = S[i-1] + A[i];
+        for (int i = 0; i < N; i++) {
+            ans[i] = Integer.parseInt(st.nextToken());
         }
-        int sum = 0;
-        for(int i = 0; i < N; i++){
-            sum = sum+S[i];
+
+        Arrays.sort(ans);
+
+        sum[0] = ans[0];
+        int total = sum[0];
+
+        for (int i = 1; i < N; i++) {
+            sum[i] = sum[i-1] + ans[i];
+            total += sum[i];
         }
-        System.out.println(sum);
+
+        System.out.println(total);
+
+
+
+
+
+
+
 
     }
 }
