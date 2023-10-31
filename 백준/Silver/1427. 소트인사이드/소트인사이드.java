@@ -1,30 +1,33 @@
-import java.util.Scanner;
 
-public class Main{
-    public static void main(String[]args) {
-        Scanner in = new Scanner(System.in);
-        String N = in.nextLine();
-        int[] A = new int[N.length()];
-        for (int i = 0; i < N.length(); i++) {
-            A[i] = Integer.parseInt(N.substring(i,i+1));
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.StringTokenizer;
+import java.util.Arrays;
+
+import static java.util.Collections.reverseOrder;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        String type = String.valueOf(N);
+        int[] ans = new int[type.length()];
+
+        for (int i = 0; i < type.length(); i++) {
+            ans[i] = Integer.parseInt(type.substring(i,i+1));
         }
 
-        for (int i = 0; i < N.length(); i++) {
-            int max = i;
-            for (int j = i+1; j <N.length(); j++) {
-                if (A[j] > A[max]) {
-                    max = j;
-                }
-                if (A[i] < A[max]) {
-                    int temp = A[i];
-                    A[i] = A[max];
-                    A[max] = temp;
-                }
-            }
+        Arrays.sort(ans);
 
+        for (int i = ans.length - 1; i >= 0; i--) {
+            sb.append(ans[i]);
         }
-        for (int i = 0; i <N.length();i++) {
-            System.out.print(A[i]);
-        }
+
+        System.out.println(Integer.parseInt(sb.toString()));
+
     }
 }
