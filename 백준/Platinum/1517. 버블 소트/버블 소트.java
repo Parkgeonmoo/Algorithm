@@ -1,62 +1,61 @@
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.StreamTokenizer;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-public class  Main  {
-    public static int []A , tmp;
+public class Main{
+    public static int[] map;
+    public static int[] tmp;
     public static long result;
-    public static void main(String[]args)throws IOException{
+    public static void main(String[]args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt((br.readLine()));
-        A = new int[N+1];
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine());
+        map = new int[N+1];
         tmp = new int[N+1];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i = 1; i<= N; i++){
-            A[i] = Integer.parseInt(st.nextToken());
+        for (int i = 1; i <= N; i++) {
+            map[i] = Integer.parseInt(st.nextToken());
         }
-        result = 0;
-        merget_sort(1,N);
-        System.out.println(result);
-    }
-    private static void merget_sort(int s, int e){
-        if(e-s < 1)
-            return;
-        int m = s+(e-s) / 2;
-        merget_sort(s,m);
-        merget_sort(m+1,e);
-        for(int i = s; i<= e; i++){
-            tmp[i] = A[i];
-        }
-        int k = s;
-        int index1 = s;
-        int index2 = m+1;
-        while(index1 <= m && index2 <= e){
-            if(tmp[index1] > tmp[index2]){
-                A[k] = tmp[index2];
-                result = result +index2 -k;
-                k++;
-                index2++;
 
-            }else{
-                A[k] = tmp[index1];
-                k++;
-                index1++;
-            }
+        result = 0;
+        merge_sort(1,N);
+       System.out.println(result);
+
+    }
+    public static void merge_sort(int S,int E) {
+        if (E-S < 1) {
+            return;
         }
-        while(index1 <=m){
-            A[k] = tmp[index1];
+        int mid = (S + E) / 2;
+        merge_sort(S,mid);
+        merge_sort(mid+1,E);
+
+        for (int i = S; i <= E; i++) {
+            tmp[i] = map[i];
+        }
+        int k = S;
+        int index1 = S;
+        int index2 = mid+1;
+        while (index1 <= mid && index2 <= E) {
+             if (tmp[index1] > tmp[index2]) {
+                 map[k] = tmp[index2];
+                 result = result + index2 - k;
+                 index2++;
+                 k++;
+             }else {
+                 map[k] = tmp[index1];
+                 index1++;
+                 k++;
+             }
+        }
+        while (index1 <= mid) {
+            map[k] = tmp[index1];
             k++;
             index1++;
         }
-        while(index2 <=e){
-            A[k] = tmp[index2];
+        while (index2 <= E) {
+            map[k] = tmp[index2];
             k++;
             index2++;
         }
     }
-
 }
