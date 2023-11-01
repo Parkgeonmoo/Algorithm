@@ -1,56 +1,69 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
+
 public class Main {
-    private static void quickSort(int[] arr, int L, int R){
-        //파티션 나누고 오른쪽 값 첫번째 값을 받아옴
-        int part2 = partition(arr, L, R);
-
-        //왼쪽 파티션의 요소가 하나 이상
-        if (L < part2 - 1)
-            quickSort(arr, L, part2 - 1);
-        //오른쪽 파티션의 요소가 하나 이상
-        if (part2 < R)
-            quickSort(arr, part2, R);
-    }
-
-    private static int partition(int[] arr, int L, int R){
-        int pivot = arr[(L + R)/2];
-        while (L <= R) {
-            while (arr[L] < pivot) L ++;
-            while (arr[R] > pivot) R--;
-            if (L <= R) {
-                swap (arr, L, R);
-                L++;
-                R--;
-            }
-        }
-        return L;
-    }
-
-    private static void swap(int[] arr, int L, int R){
-        int temp = arr[L];
-        arr[L] = arr[R];
-        arr[R] = temp;
-    }
+    public static int[] num;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
-        int[] A = new int[N];
+        num = new int[N];
 
         st = new StringTokenizer(br.readLine());
-        for(int i=0; i<N; i++)
-            A[i] = Integer.parseInt(st.nextToken());
 
-        quickSort(A, 0, A.length - 1);
+        for (int i = 0; i < N; i++) {
+            num[i] = Integer.parseInt(st.nextToken());
+        }
 
-        System.out.println(A[K-1]);
+        quick_sort(num,0,N-1);
+
+        System.out.println(num[K-1]);
+
     }
+
+    public static void quick_sort(int[] arr, int start,int end) {
+        if (end - start < 1) {
+            return;
+        }
+
+        int pivot = (start + end) / 2;
+        int pivotValue = num[pivot];
+        int s = start;
+        int e = end;
+
+        while (s <= e) {
+            while (num[s] < pivotValue) {
+                s++;
+            }
+
+            while (num[e] > pivotValue) {
+                e--;
+            }
+
+            if (s <= e) {
+                swap(arr,s,e);
+                s++;
+                e--;
+            }
+        }
+
+        quick_sort(arr,start,e);
+        quick_sort(arr,s,end);
+
+    }
+
+    public static void swap(int[] arr,int start,int end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+    }
+
 }
