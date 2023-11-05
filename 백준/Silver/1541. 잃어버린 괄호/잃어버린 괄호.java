@@ -1,33 +1,56 @@
-import java.util.Scanner;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main{
 
-    public static void main(String[]args) {
+    public static void main(String[]args)throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String s = br.readLine();
+        String[] str = s.split("-");
+        int answer = 0;
 
-        Scanner in = new Scanner(System.in);
-        String s = in.nextLine();
-        String[] map = s.split("-");
-        int sum = 0;
+        for (int i = 0; i < str.length; i++) {
+            int temp = mySum(str[i]);
 
-        for (int i = 0; i < map.length; i++) {
-            int temp = mySum(map[i]);
             if (i == 0) {
-               sum  = sum + temp;
-            }else{
-                sum = sum - temp;
+                answer = answer + temp;
             }
-
+            else {
+                answer = answer - temp;
+            }
         }
-        System.out.println(sum);
 
-        }
-    static int mySum(String a) {
-        int sum = 0;
-        String temp[] = a.split("[+]");
-        for (int i = 0; i < temp.length;i++) {
-            sum += Integer.parseInt(temp[i]);
+        System.out.println(answer);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
-        return sum;
+    public static int mySum(String s) {
+       int sum = 0;
+       String [] temp = s.split("[+]");
+       for (int i = 0; i < temp.length; i++) {
+           sum += Integer.parseInt(temp[i]);
+       }
+       return sum;
     }
 }
