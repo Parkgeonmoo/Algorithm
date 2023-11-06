@@ -1,47 +1,57 @@
-import java.util.Scanner;
 
-public class Main{
-    public static void main(String[]args) {
-        Scanner in = new Scanner(System.in);
-        int N = in.nextInt();
-        int[] map = new int[10000001];
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
-        for (int i = 2; i < map.length; i++) {
-            map[i] = i;
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+
+        int[] num = new int[10000001];
+
+        for (int i = 2; i < num.length; i++) {
+            num[i] = i;
         }
 
-        for (int i = 2; i < Math.sqrt(map.length); i++) {
-            if (map[i] == 0){
+        for (int i = 2; i < Math.sqrt(num.length); i++) {
+            if (num[i] == 0) {
                 continue;
             }
-            for (int j = i+i; j < map.length; j = j+i) {
-                map[j] = 0;
+            for (int j = i + i; j < num.length; j = j + i) {
+                num[j] = 0;
             }
         }
-
         int i = N;
-        while(true) {
-            if (map[i] != 0) {
-                int temp = map[i];
-                if (pallen(temp)) {
-                    System.out.println(temp);
+
+        while (true) {
+            if (num[i] != 0) {
+                if (is_pallen(num[i])) {
+                    System.out.println(num[i]);
                     break;
                 }
-
             }
             i++;
         }
-    }
-    public static boolean pallen(int target) {
-        char[] temp = String.valueOf(target).toCharArray();
-        int index1 = 0;
-        int index2 = temp.length-1;
 
-        while (index1 < index2) {
-            if (temp[index1] != temp[index2])
+
+
+
+    }
+
+    public static boolean is_pallen(int num) {
+        char[] numArray = String.valueOf(num).toCharArray();
+        int start = 0;
+        int end = numArray.length-1;
+
+        while (start < end) {
+            if (numArray[start] != numArray[end]) {
                 return false;
-            index1++;
-            index2--;
+            }
+            start++;
+            end--;
         }
         return true;
     }
