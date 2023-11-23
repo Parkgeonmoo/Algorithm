@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.*;
 
@@ -20,7 +19,7 @@ public class Main {
                 if  (i == j) {
                     map[i][j] = 0;
                 }else{
-                    map[i][j] = Integer.MAX_VALUE;
+                    map[i][j] =  4000001;
                 }
             }
         }
@@ -36,22 +35,22 @@ public class Main {
         for (int k = 1; k <= V; k++) {
             for (int i = 1; i <= V; i++) {
                 for (int j = 1; j <= V; j++) {
-                    if (map[i][k] != Integer.MAX_VALUE && map[k][j] != Integer.MAX_VALUE) {
+                    if (map[i][j]  > map[i][k] + map[k][j]) {
                         map[i][j] = Math.min(map[i][j], map[i][k] + map[k][j]);
                     }
                 }
             }
         }
 
-        int answer = Integer.MAX_VALUE;
+        int answer = 4000001;
         for (int i = 1; i <= V; i++) {
             for (int j = 1; j <= V; j++) {
-                if (i != j && map[i][j] != Integer.MAX_VALUE && map[j][i] != Integer.MAX_VALUE) {
+                if (i != j && map[i][j] != 4000001 && map[j][i] != 4000001) {
                     answer = Math.min(answer, map[i][j] + map[j][i]);
                 }
             }
         }
-        if (answer == Integer.MAX_VALUE) {
+        if (answer == 4000001) {
             System.out.println(-1);
         } else {
             System.out.println(answer);
