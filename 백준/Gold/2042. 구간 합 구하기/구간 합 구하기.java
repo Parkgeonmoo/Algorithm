@@ -1,20 +1,31 @@
+
 import java.io.*;
 import java.util.*;
 public class Main {
     static long[] tree;
+    static boolean maxleft = false;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken()); // 수의 개수
         int M = Integer.parseInt(st.nextToken()); // 변경이 일어나는 횟수
         int K = Integer.parseInt(st.nextToken()); // 구간 합을 구하는 횟수
-        int treeHeight = 0;
-        int lenght = N;
-        while (lenght != 0) {
-            lenght /= 2;
-            treeHeight++;
+        int treeHeigth = 0;
+        int length = N;
+        while(length!=0)
+        {
+            if(length>1&&length%2!=0){
+                maxleft = false;
+            }
+            length/=2;
+            treeHeigth++;
         }
-        int treeSize = (int) Math.pow(2, treeHeight + 1);
+
+        if(maxleft==true){    // 노드의 개수가 2의 제곱수로 딱 나누어 떨어지는 경우 트리의 높이를 1 낮춰주기
+            treeHeigth--;
+        }
+
+        int treeSize = (int) Math.pow(2, treeHeigth + 1);
         int leftNodeStartIndex = treeSize / 2 - 1;
         tree = new long[treeSize + 1];
         // 데이터를 리프노드에 입력 받기
