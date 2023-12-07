@@ -1,29 +1,45 @@
-import java.util.Scanner;
 
-public class Main{
-    static int T;
-    static int[][] bridge;
+import java.io.*;
+import java.util.*;
 
-    public static void main(String[]args) {
-        Scanner in = new Scanner(System.in);
+public class Main {
 
-        bridge = new int[30][30];
+    public static int[][] map;
 
-       for (int i = 0 ; i < 30; i++) {
-           bridge[i][i] = 1;
-           bridge[i][0] = 1;
-       }
-       for (int i = 2; i < 30; i++){
-           for (int j = 1; j < 30; j++) {
-               bridge[i][j] = bridge[i-1][j] + bridge[i-1][j-1];
-           }
-       }
-        T = in.nextInt();
-       for (int i = 0; i < T; i++){
-           int N = in.nextInt();
-           int M = in.nextInt();
-           System.out.println(bridge[M][N]);
-       }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        int T = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < T; i++) {
+            st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
+            map = new int[M+1][M+1];
+
+            map[0][0] = 1;
+
+            for (int j = 1; j < M+1; j++) {
+                map[j][1] = j;
+                map[j][0] = 1;
+                map[j][j] = 1;
+            }
+
+            for (int j = 1; j < M+1; j++) {
+                for (int k = 1; k < M+1; k++) {
+                    map[j][k] = map[j-1][k-1] + map[j-1][k];
+                }
+            }
+
+            System.out.println(map[M][N]);
+
+
+
+        }
+
+
+
 
 
     }
