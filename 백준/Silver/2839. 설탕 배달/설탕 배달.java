@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 
@@ -6,10 +5,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        if (N < 3) { // N이 3보다 작은 경우를 처리
-            System.out.println(-1);
-            return;
-        }
+        
         
         int[] D = new int[N + 1]; // 배열의 크기를 N+1로 설정
 
