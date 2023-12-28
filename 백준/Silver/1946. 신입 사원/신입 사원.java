@@ -25,7 +25,7 @@ public class Main {
 
             Arrays.sort(people,new Comparator<int[]>() {
                 public int compare(int[] s1,int[] s2) {
-                    return Integer.compare(s1[0],s2[0]);
+                    return s1[0] - s2[0];
                 }
             });
 
