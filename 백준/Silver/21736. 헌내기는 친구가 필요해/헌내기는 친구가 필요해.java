@@ -40,7 +40,7 @@ public class Main {
             }
         }
 
-        BFS(nowX,nowY);
+        DFS(nowX,nowY);
 
         if (answer != 0) {
             System.out.println(answer);
@@ -48,33 +48,24 @@ public class Main {
         else {
             System.out.println("TT");
         }
-
     }
-    public static void BFS(int x,int y) {
-        Queue<int[]> q = new LinkedList<>();
+
+    public static void DFS(int x, int y) {
         visited[x][y] = true;
-        q.offer(new int[] {x,y});
 
-        while (!q.isEmpty()) {
-            int [] now = q.poll();
-            int tempX = now[0];
-            int tempY = now[1];
+        for (int i = 0; i < 4; i++) {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
 
-            for (int i = 0; i < 4; i++) {
-                int newX = tempX + dx[i];
-                int newY = tempY + dy[i];
-
-                if (newX >= 0 && newX < N && newY >= 0 && newY < M && !visited[newX][newY] && map[newX][newY] != 'X') {
-                    if (map[newX][newY] == 'P') {
-                        answer++;
-                    }
-                    visited[newX][newY] = true;
-                    q.offer(new int[] {newX,newY});
+            if (newX >= 0 && newX < N && newY >= 0 && newY < M && !visited[newX][newY] && map[newX][newY] != 'X') {
+                if (map[newX][newY] == 'P') {
+                    answer++;
                 }
+                visited[newX][newY] = true;
+                DFS(newX, newY);
             }
-         }
-
-
+        }
     }
 }
+
 
