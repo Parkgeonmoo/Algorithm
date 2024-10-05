@@ -1,90 +1,102 @@
-
 import java.io.*;
 import java.util.*;
 public class Main {
     static long[] tree;
-    static boolean maxleft = false;
+    static boolean maxleft = true;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken()); // 수의 개수
-        int M = Integer.parseInt(st.nextToken()); // 변경이 일어나는 횟수
-        int K = Integer.parseInt(st.nextToken()); // 구간 합을 구하는 횟수
-        int treeHeigth = 0;
-        int length = N;
-        while(length!=0)
-        {
-            if(length>1&&length%2!=0){
+
+        long N = Long.parseLong(st.nextToken());
+        long M = Long.parseLong(st.nextToken());
+        long K = Long.parseLong(st.nextToken());
+
+        int count = 0;
+        long length = N;
+
+        while (length != 0) {
+            if (length > 1 && length % 2 == 1) {
                 maxleft = false;
             }
-            length/=2;
-            treeHeigth++;
+            length /= 2;
+            count++;
         }
 
-        if(maxleft==true){    // 노드의 개수가 2의 제곱수로 딱 나누어 떨어지는 경우 트리의 높이를 1 낮춰주기
-            treeHeigth--;
+        if (maxleft == true) {
+            count--;
         }
 
-        int treeSize = (int) Math.pow(2, treeHeigth + 1);
-        int leftNodeStartIndex = treeSize / 2 - 1;
-        tree = new long[treeSize + 1];
-        // 데이터를 리프노드에 입력 받기
-        for (int i = leftNodeStartIndex + 1; i <= leftNodeStartIndex + N; i++) {
-            tree[i] = Long.parseLong(br.readLine());
-        }
-        setTree(treeSize - 1); // tree 만들기
+        int treeSize = (int)Math.pow(2,count+1);
+        int leafNode = treeSize / 2 - 1;
+        tree = new long[treeSize+1];
 
-        for (int i = 0; i < M + K; i++) {
+        for (int i = leafNode + 1 ; i <= leafNode + N; i++) {
             st = new StringTokenizer(br.readLine());
-            long a = Integer.parseInt(st.nextToken());
-            int s = Integer.parseInt(st.nextToken());
-            long e = Long.parseLong(st.nextToken());
+            tree[i] = Long.parseLong(st.nextToken());
+        }
 
-            if (a == 1) { // 변경
-                changeVal(leftNodeStartIndex + s, e);
-            } else if (a == 2) { // 구간 합
-                s = s + leftNodeStartIndex;
-                e = e + leftNodeStartIndex;
-                System.out.println(getSum(s, (int) e));
+        setTree(treeSize - 1);
+
+
+        for (int i = 0; i < M+K; i++) {
+            st = new StringTokenizer(br.readLine());
+            long a = Long.parseLong(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            long c = Long.parseLong(st.nextToken());
+
+
+            if (a == 1) {
+                b = leafNode + b;
+                changeVal(b,c);
+            }
+            else if (a == 2){
+                b = leafNode + b;
+                c = leafNode + c;
+                long result = sumVal(b,(int)c);
+                System.out.println(result);
+
             } else {
                 return;
             }
+
         }
 
-        br.close();
     }
 
-    private static long getSum(int s, int e) {
+    public static long sumVal(int start,int end) {
         long partSum = 0;
-        while (s <= e) {
-            if (s % 2 == 1) {
-                partSum = partSum + tree[s];
-                s++;
+
+        while (start <= end) {
+            if (start % 2 == 1) {
+                partSum = partSum + tree[start];
+                start++;
             }
-            if (e % 2 == 0) {
-                partSum = partSum + tree[e];
-                e--;
+
+            if (end % 2 == 0) {
+                partSum = partSum + tree[end];
+                end--;
             }
-            s = s / 2;
-            e = e / 2;
+            start = start / 2;
+            end = end / 2;
         }
         return partSum;
+
     }
 
-    private static void changeVal(int index, long val) {
-        long diff = val - tree[index];
+    public static void changeVal(int index,long value) {
+        long diff = value - tree[index];
+
         while (index > 0) {
             tree[index] = tree[index] + diff;
             index = index / 2;
         }
     }
 
-    private static void setTree(int i) {
-        while (i != 1) {
-            tree[i / 2] += tree[i];
-            i--;
+    public static void setTree(int num) {
+        while (num != 1) {
+            tree[num/2] += tree[num];
+            num--;
         }
-
     }
-
 }
